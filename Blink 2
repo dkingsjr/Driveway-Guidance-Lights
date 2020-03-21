@@ -1,0 +1,52 @@
+from tkinter import *
+import RPi.GPIO as GPIO
+#from time import sleep
+
+pwm = None
+
+GPIO3 = 3
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(GPIO3, GPIO.OUT)
+
+GPIO3_state = True
+
+#while True:
+ #GPIO.output(3, GPIO.HIGH)
+ #sleep(.2)
+ #GPIO.output(3, GPIO.LOW)
+ #sleep(.5)
+ 
+def pump():
+    global GPIO3_state
+    if GPIO3_state == True:
+        GPIO.output(GPIO3, GPIO3_state)
+        GPIO3_state = False
+        ONlabel = Label(root, text="ON", font="none 12", bg='#384048', fg="green")
+        ONlabel.grid(row=1, column=0)
+    else:
+        GPIO.output(GPIO3, GPIO3_state)
+        GPIO3_state = True
+        ONlabel = Label(root, text="OFF", font="none 12", bg='#384048',  fg="red")
+        ONlabel.grid(row=1, column=0)
+
+
+root = Tk()
+root.title("Airport Chaser")
+root.configure(bg='#384048')
+#root.overrideredirect(True)
+ 
+ #window dimensions(auto size)
+RWidth=root.winfo_screenwidth()
+RHeight=root.winfo_screenheight()
+root.geometry(("%dx%d")%(RWidth,RHeight))
+ 
+pump = Button(root, padx=5, pady=5, text="Pump", font = "none 12 bold" , bg='#708090', fg='#e8e8e8', command=pump)
+pump.grid(row=2, column=0, padx=5, pady=5)
+ 
+exit = Button(root, padx=2, pady=2, text="Terminate\nRasponics", font = "Helvetica 12 bold", bg='#708090', fg='#C51A4A', command=root.destroy)
+exit.grid(row=3, column=0)
+exit.config(relief=RAISED)
+
+root.mainloop()
+GPIO.cleanup()
